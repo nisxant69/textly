@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Shared Text</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        .text-box {
+            margin: 20px 0;
+            background: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+            font-size: 1rem;
+            text-align: left;
+        }
+        .link-box, .text-copy-box {
+            margin: 20px 0;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 10px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+        .btn:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+        .btn:active {
+            transform: scale(1);
+        }
+        .btn-copied {
+            background: #28a745;
+            color: white;
+            cursor: default;
+        }
+        .btn-copied:hover {
+            background: #218838;
+        }
+        .btn-copied:active {
+            transform: scale(1);
+        }
+        .btn-copied-text {
+            font-size: 0.9rem;
+            margin-top: 5px;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📄 Your Shared Text</h1>
+        <div class="text-box">
+            <pre id="sharedText">{{ content }}</pre>
+        </div>
+        <div class="text-copy-box">
+            <button class="btn" id="textBtn" onclick="copyText()">Copy Shared Text</button>
+            <span id="textStatus" class="btn-copied-text" style="display: none;">Text Copied!</span>
+        </div>
+        <div class="link-box">
+            <input 
+                type="text" 
+                value="{{ url_for('view_text', unique_id=unique_id, _external=True) }}" 
+                id="link" 
+                readonly>
+            <button class="btn" id="linkBtn" onclick="copyToClipboard()">Copy Link</button>
+            <span id="linkStatus" class="btn-copied-text" style="display: none;">Link Copied!</span>
+        </div>
+        <a href="/" class="btn">Share Another Text</a>
+    </div>
+
+    <script>
+        function copyToClipboard() {
+            const linkInput = document.getElementById('link');
+            const linkBtn = document.getElementById('linkBtn');
+            const linkStatus = document.getElementById('linkStatus');
+            
+            linkInput.select(); // Select the text in the input box
+            navigator.clipboard.writeText(linkInput.value)
+                .then(() => {
+                    linkBtn.classList.add('btn-copied');
+                    linkStatus.style.display = 'inline';
+                    setTimeout(() => {
+                        linkStatus.style.display = 'none';
+                        linkBtn.classList.remove('btn-copied');
+                    }, 1500);
+                })
+                .catch(() => alert('Failed to copy link. Please try again.'));
+        }
+
+        function copyText() {
+            const sharedText = document.getElementById('sharedText').textContent;
+            const textBtn = document.getElementById('textBtn');
+            const textStatus = document.getElementById('textStatus');
+            
+            navigator.clipboard.writeText(sharedText)
+                .then(() => {
+                    textBtn.classList.add('btn-copied');
+                    textStatus.style.display = 'inline';
+                    setTimeout(() => {
+                        textStatus.style.display = 'none';
+                        textBtn.classList.remove('btn-copied');
+                    }, 1500);
+                })
+                .catch(() => alert('Failed to copy text. Please try again.'));
+        }
+    </script>
+</body>
+</html>
+

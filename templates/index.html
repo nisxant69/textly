@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Sharing Made easy</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Share Your Text</h1>
+        <p class="note">Your paste will automatically expire after 48 hours.</p>
+        <form method="POST" class="form">
+            <textarea 
+                name="content" 
+                rows="8" 
+                cols="50" 
+                placeholder="Paste your text here..." 
+                required></textarea>
+            <button type="submit" class="btn">Generate Link</button>
+        </form>
+    </div>
+</body>
+</html>
